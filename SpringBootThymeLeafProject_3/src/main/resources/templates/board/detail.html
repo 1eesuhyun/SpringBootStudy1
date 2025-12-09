@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style type="text/css">
+.container {
+	margin-top: 50px;
+}
+
+.row {
+	margin: 0px auto;
+	width: 960px;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<h3 class="text-center">내용보기</h3>
+				<table class="table">
+					<tbody>
+						<tr>
+							<th width="20%" class="text-center danger"> 번호</th>
+							<th width="30%" class="text-center">[[${vo.no}]]</th>
+							<th width="20%" class="text-center danger">작성일</th>
+							<th width="30%" class="text-center">[[${vo.dbday}]]</th>
+						</tr>
+						<tr>
+							<th width="20%" class="text-center danger">이름</th>
+							<th width="30%" class="text-center">[[${vo.name}]]</th>
+							<th width="20%" class="text-center danger">조회수</th>
+							<th width="30%" class="text-center">[[${vo.hit}]]</th>
+						</tr>
+						<tr>
+							<th width="20%" class="text-center danger">제목</th>
+							<th colspan="3">[[${vo.subject}]]</th>
+						</tr>
+						<tr>
+						 <td colspan="4" class="text-left" valign="top" height="250">
+						  <pre style="white-space: pre-wrap;background-color: white;border: none;">[[${vo.content}]]</pre>
+						 </td>
+						</tr>
+						<tr>
+						 <td class="text-right" colspan="4">
+						  <a th:href="@{/board/reply(no=${vo.no})}" class="btn btn-xs btn-success">답변</a>
+						  <a th:href="@{/board/update(no=${vo.no})}" class="btn btn-xs btn-warning">수정</a>
+						  <a href="#" class="btn btn-xs btn-danger">삭제</a>
+						  <a href="/board/list" class="btn btn-xs btn-info">목록</a>
+						 </td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+</body>
+</html>

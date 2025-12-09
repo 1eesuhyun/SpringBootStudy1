@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style type="text/css">
+.container{
+  margin-top: 50px;
+}
+.row {
+  margin: 0px auto;
+  width: 800px;
+}
+</style>
+</head>
+<body>
+ <div class="container">
+  <div class="row">
+   <h3 class="text-center">묻고 답하기</h3>
+    <table class="table">
+     <tbody>
+      <tr>
+       <a href="/board/insert" class="btn btn-sm btn-info">새글</a>
+      </tr>
+     </tbody>
+    </table>
+    <table class="table">
+    <thead>
+     <tr class="danger">
+      <th width="10%" class="text-center">번호</th>
+      <th width="45%" class="text-center">제목</th>
+      <th width="15%" class="text-center">이름</th>
+      <th width="20%" class="text-center">작성일</th>
+      <th width="10%" class="text-center">조회수</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr th:each="vo:${list}">
+      <td width="10%" class="text-center">[[${vo.no}]]</td>
+      <td width="45%"><a th:href="@{/board/detail(no=${vo.no})}">[[${vo.subject}]]</a>
+       &nbsp;<sup th:if="${today==vo.dbday}"><img src="/images/new.gif"></sup>
+      </td>
+      <td width="15%" class="text-center">[[${vo.name}]]</td>
+      <td width="20%" class="text-center">[[${vo.dbday}]]</td>
+      <td width="10%" class="text-center">[[${vo.hit}]]</td>
+     </tr>
+     <tr>
+      <td colspan="5" class="text-center">
+       <a href="#" class="btn btn-sm btn-success">이전</a>
+        [[${curpage}]] page / [[${totalpage}]] pages
+       <a href="#" class="btn btn-sm btn-info">다음</a>
+      </td>
+     </tr>
+    </tbody>
+    </table>
+  </div>
+ </div>
+</body>
+</html>
