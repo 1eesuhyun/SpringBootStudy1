@@ -38,7 +38,9 @@
     <tbody>
      <tr th:each="vo:${list}">
       <td width="10%" class="text-center">[[${vo.no}]]</td>
-      <td width="45%"><a th:href="@{/board/detail(no=${vo.no})}">[[${vo.subject}]]</a>
+      <td width="45%">
+       <img src="../images/re_icon.png" th:if="${vo.group_tab>0}" th:style="'margin-left:'+(${vo.group_tab*15})+'px'">
+       <a th:href="@{/board/detail(no=${vo.no})}" th:if="${vo.subject!=msg}">[[${vo.subject}]]</a>
        &nbsp;<sup th:if="${today==vo.dbday}"><img src="/images/new.gif"></sup>
       </td>
       <td width="15%" class="text-center">[[${vo.name}]]</td>

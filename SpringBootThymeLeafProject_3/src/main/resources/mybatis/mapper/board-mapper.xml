@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sist.web.mapper.BoardMapper">
 <select id="boardListData" resultType="com.sist.web.vo.BoardVO" parameterType="hashmap">
- SELECT no,name,subject,hit,num,TO_CHAR(regdate,'YYYY-MM-DD') as dbday
- FROM (SELECT no,name,subject,hit,regdate,rownum as num
- FROM (SELECT no,name,subject,hit,regdate
+ SELECT no,name,subject,hit,num,group_tab,TO_CHAR(regdate,'YYYY-MM-DD') as dbday
+ FROM (SELECT no,name,subject,hit,regdate,group_tab,rownum as num
+ FROM (SELECT no,name,subject,hit,regdate,group_tab
  FROM springReplyBoard ORDER BY group_id DESC , group_step ASC))
  WHERE num BETWEEN #{start} AND #{end}
 </select>
@@ -44,7 +44,7 @@
  <update id="boardGroupStepIncrement" parameterType="com.sist.web.vo.BoardVO">
   UPDATE springReplyBoard SET
   group_step=group_step+1
-  WHERE group_id=#{group_id} AND group_step=#{group_step}
+  WHERE group_id=#{group_id} AND group_step>#{group_step}
  </update>
  <!-- 데이터 추가 -->
 <insert id="boardReplyInsert" parameterType="com.sist.web.vo.BoardVO">
@@ -54,7 +54,7 @@
 </insert>
 <update id="boardDepthIncrement" parameterType="int">
  UPDATE springReplyBoard SET
- dept=depth+1
+ depth=depth+1
  WHERE no=#{no}
 </update>
 <!-- 
@@ -74,4 +74,23 @@
   WHERE no=#{no}
  </update>
  <!-- 삭제 -->
+ <select id="boardDeleteInfoData" resultType="com.sist.web.vo.BoardVO" parameterType="int">
+  SELECT depth,root FROM springReplyBoard
+  WHERE no=#{no}
+ </select>
+ <update id="boardSubjectChange" parameterType="int">
+  UPDATE springReplyBoard SET
+  subject='관리자에 의해 삭제되었습니다',
+  content='관리자에 의해 삭제되었습니다'
+  WHERE no=#{no}
+ </update>
+ <delete id="boardDelete" parameterType="int">
+  DELETE FROM springReplyBoard
+  WHERE no=#{no}
+ </delete>
+ <update id="boardDepthDecrement" parameterType="int">
+  UPDATE springReplyBoard SET
+  depth=depth-1
+  WHERE no=#{no}
+ </update>
 </mapper>

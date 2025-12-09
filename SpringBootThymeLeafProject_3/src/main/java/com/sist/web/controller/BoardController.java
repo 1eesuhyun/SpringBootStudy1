@@ -64,6 +64,7 @@ public class BoardController {
 		model.addAttribute("totalpage", totalpage);
 		model.addAttribute("count", count);
 		model.addAttribute("today", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		model.addAttribute("msg", "관리자에 의해 삭제된 게시물입니다");
 		
 		return "board/list";
 	}
@@ -103,5 +104,17 @@ public class BoardController {
 	{
 		model.addAttribute("no", no);
 		return "board/reply";
+	}
+	@PostMapping("/board/reply_ok")
+	public String board_reply_ok(@RequestParam("pno") int pno,@ModelAttribute("vo") BoardVO vo)
+	{
+		bservice.boardReplyInsert(pno, vo);
+		return "redirect:/board/list";
+	}
+	@GetMapping("/board/delete")
+	public String board_delete_ok(@RequestParam("no") int no,Model model)
+	{
+		model.addAttribute("no", no);
+		return "board/delete";
 	}
 }

@@ -57,9 +57,38 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	@Transactional
-	public void boardReplyInsert(BoardVO vo) {
+	@Transactional(rollbackFor = Exception.class)
+	public void boardReplyInsert(int pno,BoardVO vo) {
 		// TODO Auto-generated method stub
-		;
+		BoardVO pvo=bmapper.boardParentInfoData(pno);
+		bmapper.boardGroupStepIncrement(pvo);
+		vo.setGroup_id(pvo.getGroup_id());
+		vo.setGroup_step(pvo.getGroup_step()+1);
+		vo.setGroup_tab(pvo.getGroup_tab()+1);
+		bmapper.boardReplyInsert(vo);
+		bmapper.boardDepthIncrement(pno);
+	}
+
+	@Override
+	@Transactional(rollbackFor=Exception.class)
+	public boolean boardDelete(int no, String pwd) {
+		// TODO Auto-generated method stub
+		boolean bCheck=false;
+		String db_pwd=bmapper.boardGetPassword(no);
+		if(db_pwd.equals(pwd))
+		{
+			bCheck=true;
+			BoardVO vo=bmapper.boardDeleteInfoData(no);
+			if(vo.getDepth()==0)
+			{
+				bmapper.boardDelete(no);
+			}
+			else
+			{
+				bmapper.boardSubjectChange(no);
+			}
+			bmapper.boardDepthDecrement(vo.getRoot());
+		}
+		return bCheck;
 	}
 }

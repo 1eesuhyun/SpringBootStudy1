@@ -81,4 +81,30 @@ public interface BoardMapper {
 	public void boardReplyInsert(BoardVO vo);
 	public void boardDepthIncrement(int no);
 	
+	/*
+	 *<select id="boardDeleteInfoData" resultType="com.sist.web.vo.BoardVO" parameterType="int">
+		  SELECT depth,root FROM springReplyBoard
+		  WHERE no=#{no}
+		 </select>
+		 <update id="boardSubjectChange" parameterType="int">
+		  UPDATE springReplyBoard SET
+		  subject='관리자에 의해 삭제되었습니다',
+		  content='관리자에 의해 삭제되었습니다'
+		  WHERE no=#{no}
+		 </update>
+		 <delete id="boardDelete" parameterType="int">
+		  DELETE FROM springReplyBoard
+		  WHERE no=#{no}
+		 </delete>
+		 <update id="boardDepthDecrement" parameterType="int">
+		  UPDATE springReplyBoard SET
+		  depth=depth-1
+		  WHERE no=#{no}
+		 </update> 
+	 */
+	public BoardVO boardDeleteInfoData(int no);
+	public void boardSubjectChange(int no);
+	public void boardDelete(int no);
+	public void boardDepthDecrement(int no);
+	
 }

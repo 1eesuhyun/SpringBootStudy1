@@ -47,7 +47,7 @@
 						 <td class="text-right" colspan="4">
 						  <a th:href="@{/board/reply(no=${vo.no})}" class="btn btn-xs btn-success">답변</a>
 						  <a th:href="@{/board/update(no=${vo.no})}" class="btn btn-xs btn-warning">수정</a>
-						  <a href="#" class="btn btn-xs btn-danger">삭제</a>
+						  <a th:href="@{/board/delete(no=${vo.no})}" class="btn btn-xs btn-danger">삭제</a>
 						  <a href="/board/list" class="btn btn-xs btn-info">목록</a>
 						 </td>
 						</tr>

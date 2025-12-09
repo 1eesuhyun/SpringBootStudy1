@@ -12,5 +12,6 @@ public interface BoardService {
 	public BoardVO boardDetailData(int no);
 	public BoardVO boardUpdateData(int no);
 	public boolean boardUpdateData(BoardVO vo);
-	public void boardReplyInsert(BoardVO vo);
+	public void boardReplyInsert(int pno,BoardVO vo);
+	public boolean boardDelete(int no,String pwd);
 }
