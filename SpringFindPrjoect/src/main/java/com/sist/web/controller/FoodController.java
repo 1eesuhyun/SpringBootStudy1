@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sist.web.service.FoodService;
 import com.sist.web.vo.FoodVO;
+
+import lombok.RequiredArgsConstructor;
+
 import java.util.*;
 /*
  *                   thymeleaf            vue3
@@ -87,9 +90,9 @@ import java.util.*;
  *                                           
  */
 @Controller
+@RequiredArgsConstructor
 public class FoodController {
-	@Autowired
-	private FoodService fservice;
+	private final FoodService fservice;
 	
 	@GetMapping("/food/find")
 	public String food_find()
@@ -97,9 +100,10 @@ public class FoodController {
 		return "food/find";
 	}
 	@GetMapping("/food/detail")
-	public String food_detail(@RequestParam("fno") int fno,Model model)
+	public String food_detail(@RequestParam("fno") int fno,Model model) 
 	{
-		model.addAttribute("fno", fno);
+		FoodVO vo=fservice.foodDetailData(fno);
+		model.addAttribute("vo", vo);
 		return "food/detail";
 	}
 }
