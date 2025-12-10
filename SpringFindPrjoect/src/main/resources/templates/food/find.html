@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style type="text/css">
+.container {
+	margin-top: 50px;
+}
+
+.row {
+	margin: 0px auto;
+	width: 960px;
+}
+
+p {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.nav-link:hover {
+	cursor: pointer;
+}
+</style>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<input type="text" size=20 class="input-sm" v-model="address" ref="addr" @keyup.enter="find()">
+			<button class="btn-sm btn-primary" @click="find()">검색</button>
+		</div>
+		<div class="row" style="margin-top: 20px">
+			<div class="col-md-3" v-for="vo in food_list">
+				<div class="thumbnail">
+					<a :href="'http://localhost/food/detail?fno='+vo.fno"> <img :src="vo.poster" style="width: 240px; height: 130px">
+						<div class="caption">
+							<p>((vo.name))</p>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="row text-center" style="margin-top: 20px">
+			<ul class="pagination">
+				<li v-if="startPage>1"><a class="nav-link" @click="pageChange(startPage-1)">&laquo;</a></li>
+				<li v-for="i in range(startPage,endPage)" :class="i===curpage?'active':''"><a class="nav-link" @click="pageChange(i)">((i))</a></li>
+				<li v-if="endPage<totalpage"><a class="nav-link" @click="pageChange(endPage+1)">&raquo;</a></li>
+			</ul>
+		</div>
+	</div>
+	<script src="../food.js"></script>
+</body>
+</html>
