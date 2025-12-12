@@ -4,6 +4,8 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sist.web.service.*;
@@ -44,5 +46,26 @@ public class BoardController {
 		// 화면 출력
 		model.addAttribute("main_html", "board/list");
 		return "main/main";
+	}
+	@GetMapping("board/detail")
+	public String board_detail(@RequestParam(name="no") int no,Model model)
+	{
+		BoardVO vo=bservice.boardDetailData(no);
+		model.addAttribute("vo", vo);
+		model.addAttribute("main_html", "board/detail");
+		return "main/main";
+	}
+	@GetMapping("board/insert")
+	public String board_insert(Model model)
+	{
+		model.addAttribute("main_html", "board/insert");
+		return "main/main";
+	}
+	// requestbody 는 json을 객체로 변환할 때 vue나 react랑 연결할 때
+	@PostMapping("/board/insert_ok")
+	public String board_insert_ok(@ModelAttribute("vo") BoardVO vo)
+	{
+		bservice.boardInsert(vo);
+		return "redirect:/board/list";
 	}
 }
