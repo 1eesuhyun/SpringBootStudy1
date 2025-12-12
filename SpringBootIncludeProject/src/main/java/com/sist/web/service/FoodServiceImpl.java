@@ -43,4 +43,16 @@ public class FoodServiceImpl implements FoodService{
 		mapper.HitIncrement(fno);
 		return mapper.foodDetailData(fno);
 	}
+
+	@Override
+	public List<FoodVO> foodFindData(Map map) {
+		// TODO Auto-generated method stub
+		return mapper.foodFindData(map);
+	}
+
+	@Override
+	public int foodFindTotalPage(Map map) {
+		// TODO Auto-generated method stub
+		return mapper.foodFindTotalPage(map);
+	}
 }

@@ -1,8 +1,10 @@
 package com.sist.web.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
@@ -33,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*")
 public class FoodRestController {
 	private final FoodService fservice;
-	
+
 	@GetMapping("/food/detail_vue/")
 	public ResponseEntity<FoodVO> food_detail(@RequestParam("fno") int fno)
 	{
@@ -46,5 +48,52 @@ public class FoodRestController {
 			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(vo,HttpStatus.OK);
+	}
+
+	@RequestMapping("/food/find_vue/")
+	public ResponseEntity<Map> food_find
+	(
+			@RequestParam(name="column",required = false) String column,
+			@RequestParam(name="ss",required = false) String ss,
+			@RequestParam(name="page",required = false) String page)
+	{
+		Map map=new HashMap();
+		try
+		{
+			if(page==null)
+				page="1";
+			int curpage=Integer.parseInt(page);
+			// db연동 
+			if(column==null)
+				column="all";
+
+
+			map.put("column", column);
+			map.put("ss", ss);
+			map.put("start", (curpage*12)-12);
+			// OFFSET => 0  num BETWEEN => 1
+			List<FoodVO> list=fservice.foodFindData(map);
+			int totalpage=fservice.foodFindTotalPage(map);
+			final int BLOCK=10;
+			int startPage=((curpage-1)/BLOCK*BLOCK)+1;
+			int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;
+
+			if(endPage>totalpage)
+				endPage=totalpage;
+			map.put("list", list);
+			map.put("curpage", curpage);
+			map.put("totalpage", totalpage);
+			map.put("startPage", startPage);
+			map.put("endPage", endPage);
+			map.put("column", column);
+			if(column!=null)
+			{
+				map.put("ss", ss);
+			}
+		}catch(Exception ex)
+		{
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 }
