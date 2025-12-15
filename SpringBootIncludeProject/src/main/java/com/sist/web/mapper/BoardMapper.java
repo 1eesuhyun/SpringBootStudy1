@@ -1,5 +1,6 @@
 package com.sist.web.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -32,7 +33,15 @@ public interface BoardMapper {
 	@Insert("INSERT INTO springboard VALUES(sb_no_seq.nextval,#{name},#{subject},#{content},#{pwd},SYSDATE,0)")
 	public void boardInsert(BoardVO vo);
 	// 수정 @PutMapping
+	@Select("SELECT pwd FROM springboard WHERE no=#{no}")
+	public String boardGetPassword(int no);
+	@Update("UPDATE springboard SET "
+			+ "name=#{name},subject=#{subject},content=#{content} "
+			+ "WHERE no=#{no}")
+	public void boardUpdate(BoardVO vo);
 	// 삭제 @DeleteMapping
+	@Delete("DELETE FROM springboard WHERE no=#{no}")
+	public void boardDelete(int no);
 	// ---------------------- RestFul
 	// 게시판 / 댓글
 	

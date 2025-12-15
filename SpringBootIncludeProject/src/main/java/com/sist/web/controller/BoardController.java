@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.web.service.*;
 import com.sist.web.vo.BoardVO;
@@ -67,5 +68,68 @@ public class BoardController {
 	{
 		bservice.boardInsert(vo);
 		return "redirect:/board/list";
+	}
+	@GetMapping("/board/update")
+	public String boaerd_update(@RequestParam(name="no")int no,Model model)
+	{
+		BoardVO vo=bservice.boardUpdateData(no);
+		model.addAttribute("vo", vo);
+		model.addAttribute("main_html", "board/update");
+		return "main/main";
+	}
+	@PostMapping("/board/update_ok")
+	@ResponseBody
+	// => @RestController 
+	public String board_update_ok(@ModelAttribute("vo") BoardVO vo)
+	{
+		String res="";
+		// 데이터베이스 연결
+		boolean bCheck=bservice.boardUpdate(vo);
+		// 이동 = 1. 비밀번호가 틀린 경우 / 2. 비밀번호가 맞는 경우
+		if(bCheck=true)
+		{
+			res="<script>"
+					+ "location.href=\"/board/detail?no="+vo.getNo()+"\""
+				+ "</script>";
+		}
+		else
+		{
+			res="<script>"
+					+ "alert(\"password fail\");"
+					+ "history.back();"
+					+ "</script>";
+		}
+		return res;
+	}
+	@GetMapping("/board/delete")
+	public String board_delete(@RequestParam("no") int no,Model model)
+	{
+		model.addAttribute("no", no);
+		model.addAttribute("main_html", "board/delete");
+		return "main/main";
+	}
+	@PostMapping("/board/delete_ok")
+	@ResponseBody
+	// => @RestController 
+	public String board_delete_ok(@RequestParam("no")int no,@RequestParam("pwd")String pwd)
+	{
+		String res="";
+		// 데이터베이스 연결
+		boolean bCheck=bservice.boardDelete(no, pwd);
+		// 이동 = 1. 비밀번호가 틀린 경우 / 2. 비밀번호가 맞는 경우
+		if(bCheck=true)
+		{
+			res="<script>"
+					+ "location.href=\"/board/list\""
+				+ "</script>";
+		}
+		else
+		{
+			res="<script>"
+					+ "alert(\"password fail\");"
+					+ "history.back();"
+					+ "</script>";
+		}
+		return res;
 	}
 }
